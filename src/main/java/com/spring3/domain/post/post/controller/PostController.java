@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,10 +64,11 @@ public class PostController {
 
     }
 
+
     @PostMapping("/posts/doWrite")
     @ResponseBody
     public String doWrite(
-            @Valid PostWriteForm form
+            @Valid PostWriteForm form , BindingResult bindingResult
     ) {
 
 //        if(title.isBlank()) return getWriteFormHtml("제목을 입력해주세요.", title, content, "title");
