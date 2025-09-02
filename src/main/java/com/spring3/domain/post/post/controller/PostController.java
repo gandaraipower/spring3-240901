@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,7 +37,7 @@ public class PostController {
                 
                 <script>
                     const errorFieldName = "%s";
-                    
+                
                     if(errorFieldName.length > 0) {
                         const form = document.querySelector("form");
                         form[errorFieldName].focus();
@@ -67,9 +68,18 @@ public class PostController {
 
     @PostMapping("/posts/doWrite")
     @ResponseBody
-    public String doWrite(
-            @Valid PostWriteForm form , BindingResult bindingResult
-    ) {
+    public String doWrite(@Valid PostWriteForm form, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            FieldError fieldError = bindingResult.getFieldError();
+            String fieldName = fieldError.getField();
+            String errorMessage = fieldError.getDefaultMessage();
+
+            System.out.println("fieldName :" + fieldName);
+            System.out.println("errorMessage :" + errorMessage);
+
+            return getWriteFormHtml(errorMessage, form.title, form.content, fieldName);
+        }
 
 //        if(title.isBlank()) return getWriteFormHtml("제목을 입력해주세요.", title, content, "title");
 //        if(title.length()<2) return getWriteFormHtml("제목은 2글자 이상 적어주세요.", title, content, "title");
