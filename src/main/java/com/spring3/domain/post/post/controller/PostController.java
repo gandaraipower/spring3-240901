@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +45,8 @@ public class PostController {
 
 
     @PostMapping("/posts/doWrite")
-    public String doWrite(@Valid PostWriteForm form, BindingResult bindingResult) {
+    public String doWrite(@Valid PostWriteForm form, BindingResult bindingResult ,
+                          Model model) {
 
         if (bindingResult.hasErrors()) {
 
@@ -60,7 +62,7 @@ public class PostController {
                     .sorted()
                     .collect(Collectors.joining("\n"));
 
-
+        model.addAttribute("errorMessages", errorMessages);
             return "post/write";
         }
 
@@ -73,7 +75,9 @@ public class PostController {
 
         Post post = postService.write(form.title, form.content);
 
-        return "%d번 글이 작성되었습니다.".formatted(post.getId());
+        model.addAttribute("id", post.getId());
+
+        return "post/writeDone";
     }
 
 }
