@@ -10,12 +10,9 @@ import lombok.Getter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @Controller
 public class PostController {
@@ -25,6 +22,7 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
+
 
     @AllArgsConstructor
     @Getter
@@ -37,7 +35,6 @@ public class PostController {
         @Size(min = 2, max = 100, message = "04-content-내용은 2글자 이상 100글자 이하로 입력해주세요.")
         private String content;
     }
-
 
     @GetMapping("/posts/write")
     public String write(@ModelAttribute("form") PostWriteForm form) {
@@ -56,15 +53,24 @@ public class PostController {
 
         Post post = postService.write(form.title, form.content);
         model.addAttribute("id", post.getId());
-        return "redirect:/posts/write"; //주소창을 바꿔
+        return "redirect:/posts/%d".formatted(post.getId()); // 주소창을 바꿔
     }
 
     @GetMapping("/posts/{id}")
-    public String detail(@PathVariable Long id,Model model){
-        Optional<Post> post=postService.findById(id);
-        model.addAttribute("post",post);
+    public String detail(@PathVariable Long id, Model model) {
+
+        Post post = postService.findById(id).get();
+        model.addAttribute("post", post);
 
         return "post/detail";
+    }
+
+    @GetMapping("/posts")
+    public String list(Model model) {
+
+        List<Post> posts=postService.findAll();
+        model.addAttribute("posts", posts);
+        return "post/list";
     }
 
 }
