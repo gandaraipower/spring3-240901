@@ -53,7 +53,7 @@ public class PostController {
 
         Post post = postService.write(form.title, form.content);
         model.addAttribute("id", post.getId());
-        return "post/writeDone";
+        return "redirect:/posts/write"; //주소창을 바꿔
     }
 
 }
