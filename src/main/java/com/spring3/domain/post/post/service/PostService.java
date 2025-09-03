@@ -32,8 +32,8 @@ public class PostService {
         return postRepository.findAll();
     }
 
-    public void modify(Post post,String title,String content){
-        post.update(title,content);
+    public void modify(Post post, String title, String content) {
+        post.update(title, content);
 
     }
 }
