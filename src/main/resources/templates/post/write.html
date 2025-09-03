@@ -9,15 +9,15 @@
 
 <form method="POST" action="/posts/doWrite" th:object="${form}">
     <div>
-        <label for="title">제목</label>
+        <label for="">제목</label>
         <div>
-        <input type="text" name="title" placeholder="제목을 입력해주세요." th:value="*{title}" autoFocus>
+            <input type="text" placeholder="제목을 입력해주세요." th:field="*{title}" autoFocus>
         </div>
     </div>
     <div>
-        <label for="content">내용</label>
+        <label for="">내용</label>
         <div>
-            <textarea name="content" placeholder="내용을 입력해주세요." th:text="*{content}"></textarea>
+            <textarea placeholder="내용을 입력해주세요." th:field="*{content}"></textarea>
         </div>
     </div>
     <input type="submit" value="작성">
