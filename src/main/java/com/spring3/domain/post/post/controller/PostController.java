@@ -41,7 +41,7 @@ public class PostController {
         return "post/write";
     }
 
-    @PostMapping("/posts/doWrite")
+    @PostMapping("/posts/write")
     public String doWrite(
             @ModelAttribute("form") @Valid PostWriteForm form, BindingResult bindingResult,
             Model model
