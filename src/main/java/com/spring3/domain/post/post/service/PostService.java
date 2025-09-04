@@ -41,5 +41,9 @@ public class PostService {
         post.addComment(content);
 
     }
+
+    public void deleteComment(Post post, Long commentId) {
+        post.deleteComment(commentId);
+    }
 }
 
