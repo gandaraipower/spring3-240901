@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.io.Reader;
 import java.util.List;
 
 @Controller
@@ -52,7 +53,7 @@ public class PostController {
             Model model
     ) {
 
-        if (bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors()) {
             return "post/write";
         }
 
@@ -76,7 +77,11 @@ public class PostController {
     }
 
     @GetMapping("/posts/{id}/modify")
-    public String modify(@PathVariable Long id, @ModelAttribute("form") PostModifyForm form, Model model) {
+    public String modify(
+            @PathVariable Long id,
+            @ModelAttribute("form") PostModifyForm form,
+            Model model
+    ) {
 
         Post post = postService.findById(id).get();
         form.setTitle(post.getTitle());
@@ -89,22 +94,25 @@ public class PostController {
     @PostMapping("/posts/{id}/modify")
     @Transactional
     public String doModify(
-            @PathVariable Long id, @ModelAttribute("form") @Valid PostModifyForm form, BindingResult bindingResult,
-            Model model
+            @PathVariable Long id,
+            @ModelAttribute("form") @Valid PostModifyForm form,
+            BindingResult bindingResult
     ) {
 
-        if (bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors()) {
             return "post/modify";
         }
 
         Post post = postService.findById(id).get();
         postService.modify(post, form.title, form.content);
-        return "redirect:/posts/%d".formatted(post.getId()); // 주소창을 바꿔
+
+        return "redirect:/posts/%d".formatted(post.getId());
     }
 
 
     @GetMapping("/posts/{id}")
-    public String detail(@PathVariable Long id, Model model) {
+    @Transactional(readOnly = true)
+    public String detail(@PathVariable Long id, Model model, Reader reader) {
 
         Post post = postService.findById(id).get();
         model.addAttribute("post", post);
@@ -113,11 +121,11 @@ public class PostController {
     }
 
     @GetMapping("/posts")
+    @Transactional(readOnly = true)
     public String list(Model model) {
 
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
         return "post/list";
     }
-
 }

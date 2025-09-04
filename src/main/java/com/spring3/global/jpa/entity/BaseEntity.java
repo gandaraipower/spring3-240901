@@ -4,7 +4,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import lombok.AccessLevel;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -21,11 +20,9 @@ public abstract class BaseEntity {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
 
-    @Getter(AccessLevel.PROTECTED)
     @CreatedDate
     private LocalDateTime createDate;
 
-    @Getter(AccessLevel.PROTECTED)
     @LastModifiedDate
     private LocalDateTime modifyDate;
 
