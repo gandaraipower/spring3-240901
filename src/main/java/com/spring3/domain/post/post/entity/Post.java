@@ -4,6 +4,7 @@ import com.spring3.domain.post.coment.entity.Comment;
 import com.spring3.global.jpa.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ public class Post extends BaseEntity {
     private String title;
     private String content;
 
-    @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST, CascadeType.REMOVE},orphanRemoval = true , fetch = FetchType.LAZY)
     private List<Comment> comments=new ArrayList<>();
 
     public Post(String title, String content) {
