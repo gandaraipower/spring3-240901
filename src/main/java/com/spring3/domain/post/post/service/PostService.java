@@ -28,22 +28,22 @@ public class PostService {
     }
 
     public List<Post> findAll() {
-
         return postRepository.findAll();
     }
 
     public void modify(Post post, String title, String content) {
         post.update(title, content);
-
     }
 
     public void writeComment(Post post, String content) {
         post.addComment(content);
-
     }
 
     public void deleteComment(Post post, Long commentId) {
         post.deleteComment(commentId);
     }
-}
 
+    public void modifyComment(Post post, Long commentId, String content) {
+        post.updateComment(commentId, content);
+    }
+}

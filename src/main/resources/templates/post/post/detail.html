@@ -64,7 +64,7 @@ onSubmit="postComment__submitWriteForm(this); return false;">
         <div>내용</div>
         <div>[[${comment.content}]]</div>
         <div>
-            <a href="#">수정</a>
+            <a th:href="@{/posts/{postId}/comments/{commentId}/modify(postId=${post.id}, commentId=${comment.id})}">수정</a>
             <a th:href="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
         </div>
     </li>
