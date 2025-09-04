@@ -36,4 +36,10 @@ public class PostService {
         post.update(title, content);
 
     }
+
+    public void writeComment(Post post, String content) {
+        post.addComment(content);
+
+    }
 }
+

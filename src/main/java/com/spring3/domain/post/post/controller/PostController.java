@@ -120,7 +120,7 @@ public class PostController {
         return "post/detail";
     }
 
-    @GetMapping("/posts")
+    @GetMapping("/posts/")
     @Transactional(readOnly = true)
     public String list(Model model) {
 
