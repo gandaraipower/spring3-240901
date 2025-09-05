@@ -1,13 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="ko" layout:decorate="~{layout}">
+<th:block layout:fragment="content">
 <form method="POST" th:action="@{/posts/{postId}(postId=${post.id})}" th:object="${form}">
-
-    <div th:replace="~{post/post/form_errors :: formErrorsFragment}"></div>
 
     <input type="hidden" name="_method" value="PUT">
     <h2>번호 : <th:block th:text="${post.id}"></th:block></h2>
@@ -25,5 +18,5 @@
     </div>
     <input type="submit" value="수정 완료">
 </form>
-</body>
+</th:block>
 </html>
