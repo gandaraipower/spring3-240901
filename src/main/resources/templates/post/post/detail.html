@@ -16,56 +16,77 @@
 <h3>내용</h3>
 <div th:text="${post.content}">내용</div>
 <div>
-    <a th:href="@{/posts/}">글 목록</a>
+    <a th:href="@{/posts}">글 목록</a>
     <a th:href="@{/posts/{id}/modify(id=${post.id})}">수정</a>
-    <a th:href="@{/posts/{id}/delete(id=${post.id})}">삭제</a>
+    <a method="DELETE"
+       th:href="@{/posts/{id}(id=${post.id})}">삭제</a>
+
+    <script>
+        // 이 함수는 a 태그를 form 제출로 변환합니다.
+        function deletePost(link) {
+            const url = link.getAttribute('data-url');
+
+            // 동적으로 form 태그를 생성합니다.
+            const form = document.createElement('form');
+            form.action = url;
+            form.method = 'POST';
+
+            // _method=DELETE 필드를 추가하여 DELETE 요청을 시뮬레이션
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            form.appendChild(methodInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </div>
 <hr>
 <h2>댓글 작성</h2>
-<form th:action="@{/posts/{id}/comments/write(id=${post.id})}" method="post"
-onSubmit="postComment__submitWriteForm(this); return false;">
-    <textarea rows="10" name="content" cols="100" placeholder="내용을 입력해주세요."></textarea>
+<form th:action="@{/posts/{postId}/comments/write(postId=${post.id})}" method="POST"
+      onsubmit="postComment__submitWriteForm(this); return false;">
+    <textarea rows="10" cols="100" name="content" placeholder="댓글 내용을 입력해주세요."></textarea>
     <div>
         <input type="submit" value="등록">
     </div>
 </form>
 <script>
-    function postComment__submitWriteForm(form){
+    function postComment__submitWriteForm(form) {
         if(form.content.value.length == 0) {
-        alert("댓글 내용을 입력해주세요.");
-        form.content.focus();
-        return false;
+            alert("댓글 내용을 입력해주세요.");
+            form.content.focus();
+            return false;
         }
 
+        if(form.content.value.length < 2) {
+            alert("댓글 내용은 2자 이상 입력해주세요.");
+            form.content.focus();
+            return false;
+        }
 
-    if(form.content.value.length < 2) {
-        alert("댓글 내용은 2자 이상 입력해주세요.");
-        form.content.focus();
-        return false;
-    }
+        if(form.content.value.length > 100) {
+            alert("댓글 내용은 100자 미만으로 입력해주세요.");
+            form.content.focus();
+            return false;
+        }
 
-
-    if(form.content.value.length > 100) {
-        alert("댓글 내용은 100자 미만으로 입력해주세요.");
-        form.content.focus();
-        return false;
-    }
-
-    form.submit();
+        form.submit();
     }
 </script>
 <hr>
-<h2>댓글</h2>
+<h2>댓글 목록</h2>
 <ul>
     <li th:each="comment : ${post.comments.reversed}">
         <h2>번호 : [[${comment.id}]]</h2>
         <h3>작성일 : [[${comment.createDate}]]</h3>
         <h3>수정일 : [[${comment.modifyDate}]]</h3>
-        <div>내용</div>
+        <h3>내용</h3>
         <div>[[${comment.content}]]</div>
         <div>
             <a th:href="@{/posts/{postId}/comments/{commentId}/modify(postId=${post.id}, commentId=${comment.id})}">수정</a>
-            <a method="DELETE" th:href="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</a>
+            <a method="DELETE" th:href="@{/posts/{postId}/comments/{commentId}/delete(postId=${post.id}, commentId=${comment.id})}" onclick="return confirm('정말 삭제 하시겠습니까?')">삭제</a>
         </div>
     </li>
 </ul>
@@ -139,7 +160,6 @@ onSubmit="postComment__submitWriteForm(this); return false;">
             });
         });
     });
-
 </script>
 </body>
 </html>

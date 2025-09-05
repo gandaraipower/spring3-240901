@@ -47,17 +47,16 @@ public class CommentController {
     public String modify(
             @PathVariable Long postId,
             @PathVariable Long commentId,
+            CommentModifyForm form,
             Model model
     ) {
-        // 1. Fetch the post and comment from the service
+
         Post post = postService.findById(postId).get();
         Comment comment = post.findCommentById(commentId).get();
 
-        // 3. Add the form object and other necessary data to the model
-        model.addAttribute("post", post);
         model.addAttribute("comment", comment);
+        model.addAttribute("post", post);
 
-        // The rest of the code is fine
         return "post/comment/modify";
     }
 

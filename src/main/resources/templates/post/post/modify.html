@@ -5,12 +5,12 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST" th:object="${form}">
-
+<form method="POST" th:action="@{/posts/{postId}(postId=${post.id})}" th:object="${form}">
 
     <div th:replace="~{post/post/form_errors :: formErrorsFragment}"></div>
 
-    <h2> 번호 : <th:block th:text="${post.id}"></th:block></h2>
+    <input type="hidden" name="_method" value="PUT">
+    <h2>번호 : <th:block th:text="${post.id}"></th:block></h2>
     <div>
         <label for="">제목</label>
         <div>
@@ -23,7 +23,7 @@
             <textarea placeholder="내용을 입력해주세요." th:field="*{content}"></textarea>
         </div>
     </div>
-    <input type="submit" value="작성">
+    <input type="submit" value="수정 완료">
 </form>
 </body>
 </html>
